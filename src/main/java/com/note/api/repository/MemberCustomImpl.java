@@ -1,10 +1,6 @@
-package com.note.api.repository.implement;
+package com.note.api.repository;
 
 import com.note.api.entity.Category;
-import com.note.api.entity.QCategory;
-import com.note.api.entity.QMember;
-import com.note.api.repository.MemberCustom;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,5 +28,6 @@ public class MemberCustomImpl implements MemberCustom {
                 .fetch();
 
         return resultQuery.size();
+
     }
 }

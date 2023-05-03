@@ -1,7 +1,6 @@
-package com.note.api.repository.implement;
+package com.note.api.repository;
 
 import com.note.api.entity.Note;
-import com.note.api.repository.NoteCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

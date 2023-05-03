@@ -1,25 +1,23 @@
-package com.note.api.repository.implement;
+package com.note.api.repository;
 
 import com.note.api.entity.Category;
-import com.note.api.repository.CategoryCustom;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 
-import static com.note.api.entity.QCategory.*;
-import static com.note.api.entity.QMember.*;
+import static com.note.api.entity.QCategory.category;
+import static com.note.api.entity.QMember.member;
 
 @Slf4j
 @RequiredArgsConstructor
-@Repository
 public class CategoryCustomImpl implements CategoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    @Override
+//    @Override
     public List<Category> findCategoryByMemberId() {
         return queryFactory.selectFrom(category)
                 .join(category.member, member)

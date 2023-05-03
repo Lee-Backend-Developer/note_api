@@ -18,7 +18,7 @@ public class Category {
     private Long categoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member = new Member();
+    private Member member;
     private String name;
 
     private Date created;
