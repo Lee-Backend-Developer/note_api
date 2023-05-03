@@ -4,17 +4,15 @@ import com.note.api.entity.Member;
 import com.note.api.exception.MemberDuplication;
 import com.note.api.exception.MemberNotFound;
 import com.note.api.repository.MemberRepository;
-import com.note.api.request.MemberLogin;
-import com.note.api.request.MemberPwdChange;
-import com.note.api.request.MemberRegister;
+import com.note.api.request.member.MemberLogin;
+import com.note.api.request.member.MemberPwdChange;
+import com.note.api.request.member.MemberRegister;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 

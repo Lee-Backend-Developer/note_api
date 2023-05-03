@@ -1,4 +1,4 @@
-package com.note.api.request;
+package com.note.api.request.note;
 
 
 import com.note.api.entity.Category;

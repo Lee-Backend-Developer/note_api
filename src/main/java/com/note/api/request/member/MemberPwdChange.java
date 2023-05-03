@@ -1,4 +1,4 @@
-package com.note.api.request;
+package com.note.api.request.member;
 
 import lombok.Builder;
 import lombok.Data;

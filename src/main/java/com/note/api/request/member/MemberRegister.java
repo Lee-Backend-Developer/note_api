@@ -1,11 +1,10 @@
-package com.note.api.request;
+package com.note.api.request.member;
 
 import lombok.Builder;
 import lombok.Data;
 
-@Data
-@Builder
-public class MemberLogin {
+@Data @Builder
+public class MemberRegister {
     private String loginId;
     private String password;
 }

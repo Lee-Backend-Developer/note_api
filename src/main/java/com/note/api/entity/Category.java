@@ -32,7 +32,7 @@ public class Category {
 
     //비즈니스 로직
 
-    void edit(String name){
+    public void edit(String name){
         this.name = name;
     }
 }

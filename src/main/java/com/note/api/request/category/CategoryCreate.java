@@ -1,4 +1,4 @@
-package com.note.api.request;
+package com.note.api.request.category;
 
 import lombok.Builder;
 import lombok.Data;

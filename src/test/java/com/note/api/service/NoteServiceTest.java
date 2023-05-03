@@ -7,8 +7,8 @@ import com.note.api.exception.MemberNotFound;
 import com.note.api.repository.CategoryRepository;
 import com.note.api.repository.MemberRepository;
 import com.note.api.repository.NoteRepository;
-import com.note.api.request.NoteCreate;
-import com.note.api.request.NoteEdit;
+import com.note.api.request.note.NoteCreate;
+import com.note.api.request.note.NoteEdit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional
 @SpringBootTest
@@ -33,7 +35,7 @@ class NoteServiceTest {
     private NoteService noteService;
 
     @BeforeEach
-    void create(){
+    void create() {
         Member createMember = Member.builder()
                 .loginId("test")
                 .password("1234")
@@ -64,6 +66,35 @@ class NoteServiceTest {
         // then
         assertEquals("내용 테스트 입니다.", saveNote.getContent());
         assertEquals(1L, noteRepository.count());
+    }
+
+    @DisplayName("본인이 작성한 메모 조회")
+    @Test
+    void note_find_O() {
+        // given
+        Member member = getMember();
+
+        Category category = Category.builder()
+                .member(member)
+                .name("카테고리1")
+                .build();
+        categoryRepository.save(category);
+
+        Note note = Note.builder()
+                .member(member)
+                .content("test1")
+                .category(category)
+                .build();
+        noteRepository.save(note);
+
+        // when
+        List<Note> notes = noteService.getNote(member.getMemberId());
+
+        // then
+        assertEquals("test1", notes.get(0).getContent());
+        assertEquals("카테고리1", notes.get(0).getCategory().getName());
+        assertEquals(1L, notes.size());
+
     }
 
     @DisplayName("메모가 수정이 되어야한다")

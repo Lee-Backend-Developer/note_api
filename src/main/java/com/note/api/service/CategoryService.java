@@ -4,14 +4,17 @@ package com.note.api.service;
 import com.note.api.entity.Category;
 import com.note.api.entity.Member;
 import com.note.api.exception.CategoryLimit;
+import com.note.api.exception.CategoryNotFount;
 import com.note.api.exception.MemberNotFound;
 import com.note.api.repository.CategoryRepository;
 import com.note.api.repository.MemberRepository;
-import com.note.api.request.CategoryCreate;
+import com.note.api.request.category.CategoryCreate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,9 +32,6 @@ public class CategoryService {
 
         int size = memberRepository.countAddedCategories();
 
-
-        log.info("category size => {}", size);
-
         if(size >= 5) {
             throw new CategoryLimit();
         }
@@ -41,8 +41,27 @@ public class CategoryService {
                 .name(request.getName())
                 .build();
 
-        log.info("saveCategory = {}", saveCategory.getName());
+        return categoryRepository.save(saveCategory);
+    }
 
-        return categoryRepository.save(saveCategory); // 정상
+
+    public List<Category> getCategory() {
+        return categoryRepository.findCategoryByMemberId();
+    }
+
+
+    @Transactional
+    public void edit(Long categoryId, String editCategory) {
+        Category findCategory = categoryRepository.findById(categoryId)
+                .orElseThrow(CategoryNotFount::new);
+
+        findCategory.edit(editCategory);
+    }
+
+    public void delete(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(CategoryNotFount::new);
+
+        categoryRepository.delete(category);
     }
 }

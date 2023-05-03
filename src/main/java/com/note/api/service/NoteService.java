@@ -1,18 +1,19 @@
 package com.note.api.service;
 
-import com.note.api.entity.Category;
 import com.note.api.entity.Member;
 import com.note.api.entity.Note;
 import com.note.api.exception.MemberNotFound;
 import com.note.api.exception.NoteNotFount;
 import com.note.api.repository.MemberRepository;
 import com.note.api.repository.NoteRepository;
-import com.note.api.request.NoteCreate;
-import com.note.api.request.NoteEdit;
+import com.note.api.request.note.NoteCreate;
+import com.note.api.request.note.NoteEdit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -49,5 +50,12 @@ public class NoteService {
                 .orElseThrow(NoteNotFount::new);
 
         noteRepository.delete(findNote);
+    }
+
+    public List<Note> getNote(Long memberId) {
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFound::new);
+
+        return noteRepository.findNoteByMemberId();
     }
 }
