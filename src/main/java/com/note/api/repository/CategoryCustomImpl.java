@@ -17,7 +17,7 @@ public class CategoryCustomImpl implements CategoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-//    @Override
+    @Override
     public List<Category> findCategoryByMemberId() {
         return queryFactory.selectFrom(category)
                 .join(category.member, member)
