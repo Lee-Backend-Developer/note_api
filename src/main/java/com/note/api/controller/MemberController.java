@@ -1,5 +1,6 @@
 package com.note.api.controller;
 
+import com.note.api.entity.Member;
 import com.note.api.request.member.MemberLogin;
 import com.note.api.request.member.MemberPwdChange;
 import com.note.api.request.member.MemberRegister;
@@ -8,16 +9,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final HttpSession httpSession;
 
     @PostMapping("login")
     public void singIn(@RequestBody MemberLogin request) {
-        memberService.singIn(request);
+        Member member = memberService.singIn(request);
+        httpSession.setAttribute("memberId", member.getMemberId());
     }
 
     @PostMapping("register")

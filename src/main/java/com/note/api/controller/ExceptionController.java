@@ -12,9 +12,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionController {
 
     @ExceptionHandler(NoteApi.class)
-    public ResponseEntity exception(NoteApi e){
-        HttpStatus resolve = HttpStatus.resolve(e.getStatusCode());
-        return new ResponseEntity(resolve);
+    public ResponseEntity<ErrorResponse> exception(NoteApi e){
+
+        ErrorResponse body = ErrorResponse.builder()
+                .message(e.getMessage())
+                .code(e.getStatusCode())
+                .build();
+
+        return ResponseEntity.status(e.getStatusCode())
+                .body(body);
     }
 
     @ExceptionHandler(MemberDuplication.class)
