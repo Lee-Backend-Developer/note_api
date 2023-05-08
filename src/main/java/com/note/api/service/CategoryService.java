@@ -9,6 +9,7 @@ import com.note.api.exception.MemberNotFound;
 import com.note.api.repository.CategoryRepository;
 import com.note.api.repository.MemberRepository;
 import com.note.api.request.category.CategoryCreate;
+import com.note.api.request.category.CategoryNameChange;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -51,11 +52,11 @@ public class CategoryService {
 
 
     @Transactional
-    public void edit(Long categoryId, String editCategory) {
+    public void edit(Long categoryId, CategoryNameChange categoryNameChange) {
         Category findCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(CategoryNotFount::new);
 
-        findCategory.edit(editCategory);
+        findCategory.edit(categoryNameChange.getName());
     }
 
     public void delete(Long categoryId) {

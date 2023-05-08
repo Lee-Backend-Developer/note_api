@@ -4,31 +4,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.note.api.entity.Category;
 import com.note.api.entity.Member;
 import com.note.api.entity.Note;
-import com.note.api.exception.MemberNotFound;
 import com.note.api.exception.NoteNotFount;
 import com.note.api.repository.CategoryRepository;
 import com.note.api.repository.MemberRepository;
 import com.note.api.repository.NoteRepository;
 import com.note.api.request.note.NoteCreate;
 import com.note.api.request.note.NoteEdit;
-import com.note.api.service.NoteService;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -49,7 +48,7 @@ class NoteControllerTest {
     private NoteRepository noteRepository;
 
     @BeforeEach
-    void create() {
+    void init_create() {
         Member createMember = Member.builder()
                 .loginId("test")
                 .password("1234")
@@ -66,7 +65,7 @@ class NoteControllerTest {
     }
 
     @AfterEach
-    void delete() {
+    void init_delete() {
         noteRepository.deleteAll();
         categoryRepository.deleteAll();
         memberRepository.deleteAll();

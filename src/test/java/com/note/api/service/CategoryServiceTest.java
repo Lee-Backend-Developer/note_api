@@ -8,6 +8,7 @@ import com.note.api.exception.MemberNotFound;
 import com.note.api.repository.CategoryRepository;
 import com.note.api.repository.MemberRepository;
 import com.note.api.request.category.CategoryCreate;
+import com.note.api.request.category.CategoryNameChange;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -107,8 +108,13 @@ class CategoryServiceTest {
 
         categoryRepository.save(category);
 
+        CategoryNameChange request = CategoryNameChange.builder()
+                .name("수정된카테고리")
+                .build();
+
+
         // when
-        categoryService.edit(category.getCategoryId(), "수정된카테고리");
+        categoryService.edit(category.getCategoryId(), request);
 
         // then
         Category findCategory = categoryRepository.findById(category.getCategoryId()).orElseThrow(CategoryNotFount::new);
