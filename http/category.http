@@ -1,0 +1,26 @@
+### 회원가입
+POST http://127.0.0.1:8081/member/register
+Content-Type: application/json
+
+{
+  "loginId": "aaaa",
+  "password": "1234"
+}
+
+
+### 로그인
+POST http://127.0.0.1:8081/member/login
+Content-Type: application/json
+
+{
+  "loginId": "aaaa",
+  "password": "1234"
+}
+
+### 카테고리 추가
+POST http://127.0.0.1:8081/category/add
+Content-Type: application/json
+
+{
+  "name": "categoryAdd"
+}

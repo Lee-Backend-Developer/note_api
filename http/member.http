@@ -1,0 +1,31 @@
+### 회원가입
+POST http://127.0.0.1:8081/member/register
+Content-Type: application/json
+
+{
+  "loginId": "aaaa",
+  "password": "1234"
+}
+
+### 로그인
+POST http://127.0.0.1:8081/member/login
+Content-Type: application/json
+
+{
+  "loginId": "aaaa",
+  "password": "1234"
+}
+
+### 비밀번호 변경
+PUT http://127.0.0.1:8081/member/password
+Content-Type: application/json
+
+{
+  "currentPwd" : "1234",
+  "changePwd" : "0000"
+}
+
+### 회원 삭제
+DELETE http://127.0.0.1:8081/member/delete
+
+

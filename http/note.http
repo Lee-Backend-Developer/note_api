@@ -1,0 +1,9 @@
+### 로그인
+POST http://127.0.0.1:8081/member/login
+Content-Type: application/json
+
+{
+  "loginId": "aaaa",
+  "password": "1234"
+}
+
