@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class NoteResponse {
+    private Long noteId;
     private String category;
     private String content;
 

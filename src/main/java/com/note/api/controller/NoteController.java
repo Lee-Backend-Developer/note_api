@@ -37,6 +37,7 @@ public class NoteController {
     public List<NoteResponse> notes(@SessionAttribute(name = "memberId") Long memberId) {
         List<NoteResponse> response = noteService.getNote(memberId)
                 .stream().map(note -> NoteResponse.builder()
+                        .noteId(note.getNoteId())
                         .content(note.getContent())
                         .category(note.getCategory().getName())
                         .build()).collect(Collectors.toList());
