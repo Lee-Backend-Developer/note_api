@@ -8,5 +8,5 @@ import lombok.Data;
 @Data @Builder
 public class NoteEdit {
     private String content;
-    private Category category;
+    private Long categoryId;
 }

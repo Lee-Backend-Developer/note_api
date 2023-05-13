@@ -141,7 +141,7 @@ class NoteControllerTest {
 
         NoteEdit request = NoteEdit.builder()
                 .content("수정이 되었습니다.")
-                .category(category)
+                .categoryId(category.getCategoryId())
                 .build();
 
         //expected

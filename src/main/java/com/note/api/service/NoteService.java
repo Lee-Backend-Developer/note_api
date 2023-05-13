@@ -48,7 +48,10 @@ public class NoteService {
         Note findNote = noteRepository.findById(noteId)
                 .orElseThrow(NoteNotFount::new);
 
-        findNote.edit(request.getContent(), request.getCategory());
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(CategoryNotFount::new);
+
+        findNote.edit(request.getContent(), category);
     }
 
     @Transactional
