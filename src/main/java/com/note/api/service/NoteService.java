@@ -44,6 +44,7 @@ public class NoteService {
         return noteRepository.save(createNote);
     }
 
+    @Transactional
     public void editNote(Long noteId, NoteEdit request) {
         Note findNote = noteRepository.findById(noteId)
                 .orElseThrow(NoteNotFount::new);
