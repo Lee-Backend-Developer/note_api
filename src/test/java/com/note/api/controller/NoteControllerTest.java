@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,9 +76,10 @@ class NoteControllerTest {
     @Test
     void create_o() throws Exception {
         // given
+        Category category = getCategory();
         NoteCreate request = NoteCreate.builder()
                 .content("메모를 추가하였음")
-                .category(getCategory())
+                .categoryId(category.getCategoryId())
                 .build();
 
         // expected

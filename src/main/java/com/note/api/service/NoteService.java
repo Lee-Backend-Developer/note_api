@@ -1,9 +1,12 @@
 package com.note.api.service;
 
+import com.note.api.entity.Category;
 import com.note.api.entity.Member;
 import com.note.api.entity.Note;
+import com.note.api.exception.CategoryNotFount;
 import com.note.api.exception.MemberNotFound;
 import com.note.api.exception.NoteNotFount;
+import com.note.api.repository.CategoryRepository;
 import com.note.api.repository.MemberRepository;
 import com.note.api.repository.NoteRepository;
 import com.note.api.request.note.NoteCreate;
@@ -22,16 +25,20 @@ import java.util.List;
 public class NoteService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
     public Note createNote(Long memberId, NoteCreate request) {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(MemberNotFound::new);
 
+        Category findCategory = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(CategoryNotFount::new);
+
         Note createNote = Note.builder()
                 .member(findMember)
                 .content(request.getContent())
-                .category(request.getCategory())
+                .category(findCategory)
                 .build();
 
         return noteRepository.save(createNote);
