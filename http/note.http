@@ -3,7 +3,32 @@ POST http://127.0.0.1:8081/member/login
 Content-Type: application/json
 
 {
-  "loginId": "aaaa",
+  "loginId": "test",
   "password": "1234"
 }
 
+### 노트를 가져오기
+GET http://127.0.0.1:8081/note
+
+
+### 노트를 생성하기
+POST http://127.0.0.1:8081/note/write
+Content-Type: application/json
+
+{
+  "content": "노트를 생성합니다",
+  "categoryId": "1"
+}
+
+### 노트에 컨텐츠가 변경
+PUT http://127.0.0.1:8081/note/3/edit
+Content-Type: application/json
+
+{
+  "content": "노트가 바껴랏!!",
+  "categoryId": "1"
+}
+
+
+### 노트를 삭제함
+DELETE http://127.0.0.1:8081/note/3/delete

@@ -74,6 +74,16 @@ class CategoryControllerTest {
                 .andDo(print());
     }
 
+    @DisplayName("카테고리 조회")
+    @Test
+    void find() throws Exception {
+        // given
+
+        // expected
+        mockMvc.perform(get("/category"))
+                .andDo(print());
+    }
+
     @DisplayName("카테고리 이름이 변경이 되어야함")
     @Test
     void name_change() throws Exception {

@@ -2,12 +2,16 @@ package com.note.api.controller;
 
 import com.note.api.request.category.CategoryCreate;
 import com.note.api.request.category.CategoryNameChange;
+import com.note.api.response.CategoryResponse;
 import com.note.api.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,6 +26,18 @@ public class CategoryController {
 
         categoryService.create(memberId, request);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public List<CategoryResponse> get(@SessionAttribute("memberId") Long memberId) {
+
+        List<CategoryResponse> responses = categoryService.getCategory()
+                .stream().map(category -> CategoryResponse.builder()
+                        .name(category.getName())
+                        .categoryId(category.getCategoryId())
+                        .build()).collect(Collectors.toList());
+
+        return responses;
     }
 
     @PutMapping("{categoryId}/change")
