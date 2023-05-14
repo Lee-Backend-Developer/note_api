@@ -1,18 +1,27 @@
-### 로그인
-POST http://127.0.0.1:8081/member/login
+### 회원가입
+POST {{host}}/member/register
 Content-Type: application/json
 
 {
-  "loginId": "test",
-  "password": "1234"
+  "loginId": "{{loginId}}",
+  "password": "{{password}}"
+}
+
+### 로그인
+POST {{host}}/member/login
+Content-Type: application/json
+
+{
+  "loginId": "{{loginId}}",
+  "password": "{{password}}"
 }
 
 ### 노트를 가져오기
-GET http://127.0.0.1:8081/note
+GET {{host}}/note
 
 
 ### 노트를 생성하기
-POST http://127.0.0.1:8081/note/write
+POST {{host}}/note/write
 Content-Type: application/json
 
 {
@@ -21,7 +30,7 @@ Content-Type: application/json
 }
 
 ### 노트에 컨텐츠가 변경
-PUT http://127.0.0.1:8081/note/3/edit
+PUT {{host}}/note/3/edit
 Content-Type: application/json
 
 {
@@ -31,4 +40,4 @@ Content-Type: application/json
 
 
 ### 노트를 삭제함
-DELETE http://127.0.0.1:8081/note/3/delete
+DELETE {{host}}/note/2/delete
