@@ -59,6 +59,7 @@ public class CategoryService {
         findCategory.edit(categoryNameChange.getName());
     }
 
+    @Transactional
     public void delete(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(CategoryNotFount::new);
