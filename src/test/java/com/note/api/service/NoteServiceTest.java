@@ -118,7 +118,7 @@ class NoteServiceTest {
 
         NoteEdit noteEditRequest = NoteEdit.builder()
                 .content("수정된 노트입니다")
-                .category(category)
+                .categoryId(category.getCategoryId())
                 .build();
 
         // when
