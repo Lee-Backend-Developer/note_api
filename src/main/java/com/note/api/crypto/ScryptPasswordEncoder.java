@@ -1,9 +1,11 @@
 package com.note.api.crypto;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("default")
 public class ScryptPasswordEncoder implements PasswordEncoder {
 
     private static final SCryptPasswordEncoder ENCODER = new SCryptPasswordEncoder(16, 8, 1, 32, 64);

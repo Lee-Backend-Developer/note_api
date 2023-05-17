@@ -1,5 +1,6 @@
 package com.note.api.service;
 
+import com.note.api.crypto.PasswordEncoder;
 import com.note.api.entity.Member;
 import com.note.api.exception.MemberDuplication;
 import com.note.api.exception.MemberNotFound;
@@ -20,17 +21,21 @@ import java.util.Optional;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Member singUp(MemberRegister request){
         Optional<Member> findMember = memberRepository.findByLoginId(request.getLoginId());
-        if(findMember.isPresent()){
+
+        if(findMember.isPresent()) {
             throw new MemberDuplication();
         }
 
+        String encryptPwd = passwordEncoder.encrypt(request.getPassword());
+
         Member createMember = Member.builder()
                 .loginId(request.getLoginId())
-                .password(request.getPassword())
+                .password(encryptPwd)
                 .build();
 
         Member save = memberRepository.save(createMember);
@@ -39,8 +44,13 @@ public class MemberService {
     }
 
     public Member singIn(MemberLogin request) {
-        Member findMember = memberRepository.findByLoginIdAndPassword(request.getLoginId(), request.getPassword())
+
+        Member findMember = memberRepository.findByLoginId(request.getLoginId())
                 .orElseThrow(MemberNotFound::new);
+
+        if (!passwordEncoder.matches(request.getPassword(), findMember.getPassword())) {
+            throw new MemberNotFound();
+        }
 
         return findMember;
     }

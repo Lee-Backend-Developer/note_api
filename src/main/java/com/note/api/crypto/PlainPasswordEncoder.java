@@ -1,8 +1,11 @@
 package com.note.api.crypto;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-//@Component
+
+@Component
+@Profile("test")
 public class PlainPasswordEncoder implements PasswordEncoder {
     @Override
     public String encrypt(String rawPassword) {
