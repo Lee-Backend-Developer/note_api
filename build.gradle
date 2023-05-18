@@ -42,6 +42,8 @@ dependencies {
 
     // spring password encoder
     implementation 'org.springframework.security:spring-security-crypto'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+
 
 }
 

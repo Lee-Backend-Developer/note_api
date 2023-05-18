@@ -41,6 +41,13 @@ class NoteServiceTest {
                 .password("1234")
                 .build();
         memberRepository.save(createMember);
+
+        Category category = Category.builder()
+                .member(createMember)
+                .name("테스트1")
+                .build();
+
+        categoryRepository.save(category);
     }
 
     @AfterEach
@@ -55,9 +62,11 @@ class NoteServiceTest {
     void create_note_o() {
         // given
         Member createMember = getMember();
+        Category category = getCategory();
 
         NoteCreate request = NoteCreate.builder()
                 .content("내용 테스트 입니다.")
+                .categoryId(category.getCategoryId())
                 .build();
 
         // when
@@ -104,12 +113,14 @@ class NoteServiceTest {
         Member createMember = getMember();
 
         Category createCategory = Category.builder()
+                .member(createMember)
                 .name("작업1")
                 .build();
         categoryRepository.save(createCategory);
 
         NoteCreate noteCreateRequest = NoteCreate.builder()
                 .content("내용 테스트 입니다.")
+                .categoryId(createCategory.getCategoryId())
                 .build();
         Note note = noteService.createNote(createMember.getMemberId(), noteCreateRequest);
 
@@ -124,7 +135,6 @@ class NoteServiceTest {
         // when
         noteService.editNote(note.getNoteId(), noteEditRequest);
 
-
         // then
         assertEquals(editContent, note.getContent());
     }
@@ -133,8 +143,10 @@ class NoteServiceTest {
     @Test
     void delete_note_o() {
         // given
+        Member member = getMember();
         Note createNote = Note.builder()
                 .content("삭제될 메모")
+                .member(member)
                 .build();
 
         Note saveNote = noteRepository.save(createNote);
@@ -150,6 +162,10 @@ class NoteServiceTest {
     private Member getMember() {
         return memberRepository.findByLoginIdAndPassword("test", "1234")
                 .orElseThrow(MemberNotFound::new);
+    }
+
+    private Category getCategory(){
+        return categoryRepository.findAll().get(0);
     }
 
 }
