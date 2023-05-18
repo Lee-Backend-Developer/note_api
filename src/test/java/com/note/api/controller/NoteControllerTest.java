@@ -140,6 +140,7 @@ class NoteControllerTest {
         noteRepository.save(note);
 
         NoteEdit request = NoteEdit.builder()
+                .editorMemberId(member.getMemberId())
                 .content("수정이 되었습니다.")
                 .categoryId(category.getCategoryId())
                 .build();

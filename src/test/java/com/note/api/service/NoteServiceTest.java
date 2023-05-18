@@ -4,6 +4,7 @@ import com.note.api.entity.Category;
 import com.note.api.entity.Member;
 import com.note.api.entity.Note;
 import com.note.api.exception.MemberNotFound;
+import com.note.api.exception.NoteNotEqual;
 import com.note.api.repository.CategoryRepository;
 import com.note.api.repository.MemberRepository;
 import com.note.api.repository.NoteRepository;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional
 @SpringBootTest
@@ -128,6 +130,7 @@ class NoteServiceTest {
         String editContent = "수정된 노트입니다";
 
         NoteEdit noteEditRequest = NoteEdit.builder()
+                .editorMemberId(createMember.getMemberId())
                 .content("수정된 노트입니다")
                 .categoryId(category.getCategoryId())
                 .build();
@@ -137,6 +140,38 @@ class NoteServiceTest {
 
         // then
         assertEquals(editContent, note.getContent());
+    }
+
+    @DisplayName("노트 작성가 아닌사람이 수정할 경우 에러가 나와야한다")
+    @Test
+    void edit_note_x() {
+        // given
+        Member modifiedWriter = Member.builder()
+                .loginId("test1")
+                .password("1234")
+                .build();
+        memberRepository.save(modifiedWriter);
+
+        Member writer = getMember();
+        Category category = getCategory();
+        Note note = Note.builder()
+                .member(writer)
+                .category(category)
+                .content("수정이 안되어야함")
+                .build();
+        noteRepository.save(note);
+
+        NoteEdit noteEdit = NoteEdit.builder()
+                .editorMemberId(3L)
+                .content("수정이 되었습니다")
+                .categoryId(category.getCategoryId())
+                .build();
+
+        // expected
+        assertThrows(NoteNotEqual.class, () -> {
+            noteService.editNote(note.getNoteId(), noteEdit);
+        });
+
     }
 
     @DisplayName("노트가 삭제가 되어야한다")
