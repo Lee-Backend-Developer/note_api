@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface NoteCustom {
 
-    List<Note> findNoteByMemberId();
+    List<Note> findNoteByMemberId(Long memberId);
 
 }

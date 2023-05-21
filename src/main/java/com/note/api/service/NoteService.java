@@ -72,7 +72,7 @@ public class NoteService {
     }
 
     public List<Note> getNote(Long memberId) {
-        return noteRepository.findNoteByMemberId();
+        return noteRepository.findNoteByMemberId(memberId);
     }
 
     private void validationNote(Long noteId, Long memberId) {

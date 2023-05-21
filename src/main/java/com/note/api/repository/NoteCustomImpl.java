@@ -18,10 +18,10 @@ public class NoteCustomImpl implements NoteCustom {
 
 
     @Override
-    public List<Note> findNoteByMemberId() {
+    public List<Note> findNoteByMemberId(Long memberId) {
         return queryFactory.selectFrom(note)
                 .join(note.member, member)
-                .where(note.member.memberId.eq(member.memberId))
+                .where(note.member.memberId.eq(memberId))
                 .fetch();
     }
 }
