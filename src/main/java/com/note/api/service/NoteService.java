@@ -11,6 +11,7 @@ import com.note.api.repository.CategoryRepository;
 import com.note.api.repository.MemberRepository;
 import com.note.api.repository.NoteRepository;
 import com.note.api.request.note.NoteCreate;
+import com.note.api.request.note.NoteDelete;
 import com.note.api.request.note.NoteEdit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,6 @@ public class NoteService {
     private final NoteRepository noteRepository;
     private final CategoryRepository categoryRepository;
 
-    // todo 회원 검증로직이 필요
     // todo 회원, 메모 생성된 날짜 jpa 적용
 
     @Transactional
@@ -62,11 +62,11 @@ public class NoteService {
     }
 
     @Transactional
-    public void deleteNote(Long noteId) {
+    public void deleteNote(Long noteId, NoteDelete request) {
         Note findNote = noteRepository.findById(noteId)
                 .orElseThrow(NoteNotFount::new);
 
-        validationNote(noteId, findNote.getMember().getMemberId());
+        validationNote(noteId, request.getMemberId());
 
         noteRepository.delete(findNote);
     }

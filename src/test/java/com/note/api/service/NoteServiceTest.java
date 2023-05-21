@@ -9,6 +9,7 @@ import com.note.api.repository.CategoryRepository;
 import com.note.api.repository.MemberRepository;
 import com.note.api.repository.NoteRepository;
 import com.note.api.request.note.NoteCreate;
+import com.note.api.request.note.NoteDelete;
 import com.note.api.request.note.NoteEdit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -186,8 +187,12 @@ class NoteServiceTest {
 
         Note saveNote = noteRepository.save(createNote);
 
+        NoteDelete noteDelete = NoteDelete.builder()
+                .memberId(member.getMemberId())
+                .build();
+
         // when
-        noteService.deleteNote(saveNote.getNoteId());
+        noteService.deleteNote(saveNote.getNoteId(), noteDelete);
 
         // then
         assertEquals(0L, noteRepository.count());

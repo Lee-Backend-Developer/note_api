@@ -9,11 +9,13 @@ import com.note.api.repository.CategoryRepository;
 import com.note.api.repository.MemberRepository;
 import com.note.api.repository.NoteRepository;
 import com.note.api.request.note.NoteCreate;
+import com.note.api.request.note.NoteDelete;
 import com.note.api.request.note.NoteEdit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.invocation.MockHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,11 +24,15 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -170,9 +176,21 @@ class NoteControllerTest {
                 .build();
         noteRepository.save(note);
 
+        NoteDelete noteDelete = NoteDelete.builder()
+                .memberId(2L)
+                .build();
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("memberId", member.getMemberId());
+
         // expected
         Long noteId = note.getNoteId();
-        mockMvc.perform(MockMvcRequestBuilders.delete("/note/{noteId}/delete", noteId));
+        mockMvc.perform(delete("/note/{noteId}/delete", noteId)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(noteDelete)))
+                .andExpect(status().isOk())
+                .andDo(print());
 
         assertEquals(0L, noteRepository.count());
     }

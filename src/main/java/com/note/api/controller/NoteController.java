@@ -2,6 +2,7 @@ package com.note.api.controller;
 
 import com.note.api.entity.Note;
 import com.note.api.request.note.NoteCreate;
+import com.note.api.request.note.NoteDelete;
 import com.note.api.request.note.NoteEdit;
 import com.note.api.response.NoteResponse;
 import com.note.api.service.NoteService;
@@ -52,8 +53,12 @@ public class NoteController {
     }
 
     @DeleteMapping("{noteId}/delete")
-    public ResponseEntity delete(@PathVariable("noteId") Long noteId) {
-        noteService.deleteNote(noteId);
+    public ResponseEntity delete(@PathVariable("noteId") Long noteId, @SessionAttribute(name = "memberId") Long memberId) {
+        NoteDelete request = NoteDelete.builder()
+                .memberId(memberId)
+                .build();
+
+        noteService.deleteNote(noteId, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
