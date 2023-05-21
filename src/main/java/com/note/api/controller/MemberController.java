@@ -40,4 +40,8 @@ public class MemberController {
         memberService.delete(memberId);
     }
 
+    @GetMapping("logout")
+    public void logout(HttpSession session) {
+        session.invalidate();
+    }
 }
