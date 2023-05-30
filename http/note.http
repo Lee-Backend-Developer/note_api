@@ -16,6 +16,24 @@ Content-Type: application/json
   "password": "{{password}}"
 }
 
+### 회원가입 - 다른 아이디
+POST {{host}}/member/register
+Content-Type: application/json
+
+{
+  "loginId": "test02",
+  "password": "1234"
+}
+
+### 로그인 - 다른 아이디
+POST {{host}}/member/login
+Content-Type: application/json
+
+{
+  "loginId": "test02",
+  "password": "1234"
+}
+
 ### 노트를 가져오기
 GET {{host}}/note
 
@@ -26,7 +44,7 @@ Content-Type: application/json
 
 {
   "content": "노트를 생성합니다",
-  "categoryId": "1"
+  "categoryId": "2"
 }
 
 ### 노트에 컨텐츠가 변경

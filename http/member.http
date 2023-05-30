@@ -16,6 +16,15 @@ Content-Type: application/json
   "password": "{{password}}"
 }
 
+### 로그인 - 비밀번호 다르게 입력
+POST {{host}}/member/login
+Content-Type: application/json
+
+{
+  "loginId": "{{loginId}}",
+  "password": "12345"
+}
+
 ### 비밀번호 변경
 PUT {{host}}/member/password
 Content-Type: application/json
@@ -27,5 +36,8 @@ Content-Type: application/json
 
 ### 회원 삭제
 DELETE {{host}}/member/delete
+
+### 로그아웃
+GET {{host}}/member/logout
 
 
