@@ -46,7 +46,6 @@ function categoryAdd() {
 function categoryGet(){
     axios.get("/api/category")
         .then(function (response) {
-            console.log("응답 => ", response.data);
             let data = response.data;
             for(let category of data) {
                 let categoryObj = {

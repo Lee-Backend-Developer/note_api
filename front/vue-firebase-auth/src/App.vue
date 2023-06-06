@@ -3,18 +3,33 @@
   <div class="navbar">
     <nav class="nav">
       <div class="nav-el" id="name_project">
-        <img src="./assets/logo.png" width="30" class="me-2" alt="" />
-        Vue Firebase Authentication
+        <img
+          @click="homepage"
+          src="./assets/logo.png"
+          width="30"
+          class="me-2"
+          alt=""
+        />
+
+        메모 프로젝트
       </div>
       <div class="nav-el">
-        <a href="https://github.com/vladpostu/vue-firebase-auth" target="blank"
-          >GitHub Repo</a
-        >
+        <a href="/notes" class="m-3">노트</a>
+        <a href="/member/logout" class="m-3">로그아웃</a>
+        <a href="/category" class="m-3">카테고리</a>
       </div>
     </nav>
   </div>
   <router-view id="content" />
 </template>
+
+<script setup>
+import router from "@/router";
+
+function homepage() {
+  router.push("/");
+}
+</script>
 
 <style>
 /* CUSTOM STYLE */

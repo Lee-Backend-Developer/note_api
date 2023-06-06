@@ -1,25 +1,26 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import axios from "axios";
+import router from "@/router";
 
 const showModal = ref(false);
 const newNote = ref("");
 const errorMessage = ref("");
 const notes = ref([]);
+let categorios = ref([]);
+let categoryId;
+
 
 onMounted(() => {
   getNotes();
+  categoryGet();
 });
 
-// function getRandomColor() {
-//   return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
-// }
 function getNotes() {
   const url = "/api/note";
   axios
     .get(url)
     .then(function (response) {
-      console.log("response ==> " + JSON.stringify(response));
       for (let obj of response.data) {
         let noteObj = {
           id: obj.id,
@@ -40,7 +41,20 @@ function getNotes() {
     });
 }
 
-const self = this;
+function categoryGet(){
+    axios.get("/api/category")
+        .then(function (response) {
+            let data = response.data;
+            for(let category of data) {
+                let categoryObj = {
+                    categoryId: category.categoryId,
+                    name: category.name
+                };
+                categorios.value.push(categoryObj);
+            }
+        });
+}
+
 const addNote = () => {
   if (newNote.value.length < 10) {
     return (errorMessage.value = "Note must be at least 10 characters long!");
@@ -49,13 +63,13 @@ const addNote = () => {
   const url = "/api/note/write";
   const request = {
     content: newNote.value,
-    categoryId: 1,
+    categoryId: categoryId,
   };
   axios
     .post(url, request)
     .then(function (response) {
       console.log("메모를 성공적으로 등록됨", response);
-      self.$router.push("/notes");
+      router.go(0);
     })
     .catch(function (error) {
       console.log("메모를 전송 실패", error);
@@ -64,11 +78,22 @@ const addNote = () => {
   newNote.value = "";
   errorMessage.value = "";
 };
+function categoryChange(event) {
+    categoryId = event.target.value;
+}
 </script>
 <template>
   <main>
     <div v-if="showModal" class="overlay">
       <div class="modal">
+          <select class="form-select" aria-label="Default select example" @change="categoryChange($event)">
+              <option selected>카테고리 선택</option>
+              <option v-for="category in categorios"
+                      :key="category.categoryId"
+                      :value="category.categoryId">
+                  {{ category.name }}
+              </option>
+          </select>
         <textarea
           v-model.trim="newNote"
           name="note"
@@ -95,7 +120,6 @@ const addNote = () => {
           :style="{ backgroundColor: note.backgroundColor }"
         >
           <p class="main-text">{{ note.content }}</p>
-          <!--<p class="date">{{ note.date.toLocaleDateString("en-GB") }}</p>-->
         </div>
       </div>
     </div>
@@ -106,12 +130,14 @@ const addNote = () => {
 main {
   height: 100vh;
   width: 100vw;
+  top: 58% !important;
 }
 
 .container {
   max-width: 1000px;
   padding: 10px;
   margin: 0 auto;
+  position: relative;
 }
 
 header {
@@ -208,4 +234,5 @@ button {
   color: darkred;
   margin-top: 8px;
 }
+
 </style>
