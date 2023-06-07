@@ -48,7 +48,8 @@ public class NoteController {
     }
 
     @PutMapping("{noteId}/edit")
-    public ResponseEntity edit(@RequestBody NoteEdit request, @PathVariable("noteId") Long noteId) {
+    public ResponseEntity edit(@RequestBody NoteEdit request, @PathVariable("noteId") Long noteId, @SessionAttribute(name = "memberId") Long memberId) {
+        request.setEditorMemberId(memberId);
         noteService.editNote(noteId, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
