@@ -21,9 +21,10 @@ function getNotes() {
     axios
         .get(url)
         .then(function (response) {
+            console.log(response);
             for (let obj of response.data) {
                 let noteObj = {
-                    id: obj.id,
+                    id: obj.noteId,
                     content: obj.content,
                     category: obj.category,
                 };
@@ -82,6 +83,12 @@ const addNote = () => {
 function categoryChange(event) {
     categoryId = event.target.value;
 }
+
+function deleteNote(noteId) {
+    let url = "/api/note/"+noteId+"/delete";
+    axios.delete(url);
+    history.go(0);
+}
 </script>
 <template>
     <main>
@@ -112,7 +119,6 @@ function categoryChange(event) {
                 <h1>Notes</h1>
                 <button @click="showModal = true">+</button>
             </header>
-    <!-- todo note 순서가 밑으로 쏠리는 현상을 해결해야됨-->
             <div class="container-fluid">
                 <div class="row row-cols-auto">
                     <div class="col" v-for="note in notes" :key="note.id">
@@ -120,7 +126,11 @@ function categoryChange(event) {
                             <div class="card-body">
                                 <h5 class="card-title">category: {{ note.category }}</h5>
                                 <p class="card-text">{{ note.content }}</p>
-                                <a href="#" class="btn btn-primary m-2">삭제</a>
+                                <a href="#"
+                                   class="btn btn-primary m-2"
+                                   @click="deleteNote(note.id)">
+                                    삭제
+                                </a>
                                 <a href="#" class="btn btn-primary">수정</a>
                             </div>
                         </div>
