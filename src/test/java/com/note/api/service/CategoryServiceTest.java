@@ -89,7 +89,7 @@ class CategoryServiceTest {
         categoryRepository.save(category);
 
         // when
-        List<Category> categoryList = categoryService.getCategory();
+        List<Category> categoryList = categoryService.getCategory(member.getMemberId());
 
         // then
         assertEquals(1L, categoryList.size());

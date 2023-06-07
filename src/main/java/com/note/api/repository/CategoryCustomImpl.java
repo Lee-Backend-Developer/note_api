@@ -18,10 +18,10 @@ public class CategoryCustomImpl implements CategoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Category> findCategoryByMemberId() {
+    public List<Category> findCategoryByMemberId(Long memberId) {
         return queryFactory.selectFrom(category)
                 .join(category.member, member)
-                .where(category.member.memberId.eq(member.memberId))
+                .where(category.member.memberId.eq(memberId))
                 .fetch();
     }
 }

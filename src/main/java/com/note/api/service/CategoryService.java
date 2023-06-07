@@ -46,8 +46,8 @@ public class CategoryService {
     }
 
 
-    public List<Category> getCategory() {
-        return categoryRepository.findCategoryByMemberId();
+    public List<Category> getCategory(Long memberId) {
+        return categoryRepository.findCategoryByMemberId(memberId);
     }
 
 

@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface CategoryCustom {
 
-    List<Category> findCategoryByMemberId();
+    List<Category> findCategoryByMemberId(Long memberId);
 
 }

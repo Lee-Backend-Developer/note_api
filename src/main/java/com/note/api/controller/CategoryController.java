@@ -31,7 +31,7 @@ public class CategoryController {
     @GetMapping
     public List<CategoryResponse> get(@SessionAttribute("memberId") Long memberId) {
 
-        List<CategoryResponse> responses = categoryService.getCategory()
+        List<CategoryResponse> responses = categoryService.getCategory(memberId)
                 .stream().map(category -> CategoryResponse.builder()
                         .name(category.getName())
                         .categoryId(category.getCategoryId())

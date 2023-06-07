@@ -1,6 +1,5 @@
 package com.note.api.controller;
 
-import com.note.api.entity.Note;
 import com.note.api.request.note.NoteCreate;
 import com.note.api.request.note.NoteDelete;
 import com.note.api.request.note.NoteEdit;
