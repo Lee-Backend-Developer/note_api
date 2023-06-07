@@ -100,14 +100,26 @@ const editNoteObj = reactive({
     content: "",
     categoryId: "",
 })
-function editNote(noteId, content, categoryId) {
+function editNoteBtn(noteId, content, categoryId) {
     console.log("noteId => ", noteId, " content => ", content, " categoryId =>", categoryId)
     showEditNote.value = !showEditNote.value;
     editNoteObj.noteId = noteId;
     editNoteObj.content = content;
     editNoteObj.categoryId = categoryId;
     console.log(editNoteObj);
+}
 
+function editNote() {
+    let request = {
+        noteId: editNoteObj.noteId,
+        content: editNoteObj.content,
+        categoryId: editNoteObj.categoryId,
+    }
+    let url = "/api/note/"+request.noteId+"/edit";
+    axios
+        .put(url, request);
+
+    history.go(0);
 }
 
 </script>
@@ -160,7 +172,7 @@ function editNote(noteId, content, categoryId) {
                         v-model="editNoteObj.content"
                     ></textarea>
                     <p v-if="errorMessage">{{ errorMessage }}</p>
-                    <button @click="addNote">Edit Note</button>
+                    <button @click="editNote()">Edit Note</button>
                     <button class="cancel" @click="showEditNote = false">Cancel</button>
                 </div>
             </div>
@@ -176,7 +188,7 @@ function editNote(noteId, content, categoryId) {
                                    @click="deleteNote(note.id)">
                                     삭제
                                 </a>
-                                <a href="#" class="btn btn-primary" @click="editNote(note.id, note.content, note.categoryId)">수정</a>
+                                <a href="#" class="btn btn-primary" @click="editNoteBtn(note.id, note.content, note.categoryId)">수정</a>
                             </div>
                         </div>
                     </div>
