@@ -41,6 +41,7 @@ public class NoteController {
                         .noteId(note.getNoteId())
                         .content(note.getContent())
                         .category(note.getCategory().getName())
+                        .categoryId(note.getCategory().getCategoryId())
                         .build()).collect(Collectors.toList());
 
         return response;

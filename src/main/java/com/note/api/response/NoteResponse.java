@@ -8,6 +8,7 @@ import lombok.Data;
 public class NoteResponse {
     private Long noteId;
     private String category;
+    private Long categoryId;
     private String content;
 
 }
