@@ -77,3 +77,7 @@ Temporary Items
 ### macOS Patch ###
 # iCloud generated files
 *.icloud
+
+# node director
+front/node
+front/vue-firebase-auth/package-lock.json
