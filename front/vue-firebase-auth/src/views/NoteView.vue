@@ -1,14 +1,11 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, ref, reactive} from "vue";
 import axios from "axios";
 import router from "@/router";
 
 const showModal = ref(false);
 const newNote = ref("");
 const errorMessage = ref("");
-const notes = ref([]);
-let categorios = ref([]);
-let categoryId;
 
 
 onMounted(() => {
@@ -16,46 +13,7 @@ onMounted(() => {
     categoryGet();
 });
 
-function getNotes() {
-    const url = "/api/note";
-    axios
-        .get(url)
-        .then(function (response) {
-            console.log(response);
-            for (let obj of response.data) {
-                let noteObj = {
-                    id: obj.noteId,
-                    content: obj.content,
-                    category: obj.category,
-                };
-                notes.value.push(noteObj);
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-            let response = error.response.data;
-            if (response.code == 400) {
-                console.log(response.message);
-                alert(response.message);
-            }
-            console.log(error);
-        });
-}
-
-function categoryGet() {
-    axios.get("/api/category")
-        .then(function (response) {
-            let data = response.data;
-            for (let category of data) {
-                let categoryObj = {
-                    categoryId: category.categoryId,
-                    name: category.name
-                };
-                categorios.value.push(categoryObj);
-            }
-        });
-}
-
+const notes = ref([]);
 const addNote = () => {
     if (newNote.value.length < 10) {
         return (errorMessage.value = "Note must be at least 10 characters long!");
@@ -80,6 +38,50 @@ const addNote = () => {
     errorMessage.value = "";
 };
 
+function getNotes() {
+    const url = "/api/note";
+    axios
+        .get(url)
+        .then(function (response) {
+            console.log(response);
+            for (let obj of response.data) {
+                console.log("note response => ", response);
+                let noteObj = {
+                    id: obj.noteId,
+                    content: obj.content,
+                    category: obj.category,
+                    categoryId: obj.categoryId,
+                };
+                notes.value.push(noteObj);
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+            let response = error.response.data;
+            if (response.code == 400) {
+                console.log(response.message);
+                alert(response.message);
+            }
+            console.log(error);
+        });
+}
+
+let categorios = ref([]);
+let categoryId;
+function categoryGet() {
+    axios.get("/api/category")
+        .then(function (response) {
+            let data = response.data;
+            for (let category of data) {
+                let categoryObj = {
+                    categoryId: category.categoryId,
+                    name: category.name
+                };
+                categorios.value.push(categoryObj);
+            }
+        });
+}
+
 function categoryChange(event) {
     categoryId = event.target.value;
 }
@@ -89,6 +91,25 @@ function deleteNote(noteId) {
     axios.delete(url);
     history.go(0);
 }
+
+const showEditNote = ref(false);
+const content = ref("");
+const category = ref("");
+const editNoteObj = reactive({
+    noteId: "",
+    content: "",
+    categoryId: "",
+})
+function editNote(noteId, content, categoryId) {
+    console.log("noteId => ", noteId, " content => ", content, " categoryId =>", categoryId)
+    showEditNote.value = !showEditNote.value;
+    editNoteObj.noteId = noteId;
+    editNoteObj.content = content;
+    editNoteObj.categoryId = categoryId;
+    console.log(editNoteObj);
+
+}
+
 </script>
 <template>
     <main>
@@ -119,6 +140,30 @@ function deleteNote(noteId) {
                 <h1>Notes</h1>
                 <button @click="showModal = true">+</button>
             </header>
+            <div v-if="showEditNote" class="overlay">
+                <div class="modal">
+                    <select class="form-select"
+                            aria-label="Default select example"
+                            @change="categoryChange($event)" v-model="editNoteObj.categoryId">
+                        <option selected>카테고리 선택</option>
+                        <option v-for="category in categorios"
+                                :key="category.categoryId"
+                                :value="category.categoryId">
+                            {{ category.name }}
+                        </option>
+                    </select>
+                    <textarea
+                        name="noteEdit"
+                        id="noteEdit"
+                        cols="30"
+                        rows="10"
+                        v-model="editNoteObj.content"
+                    ></textarea>
+                    <p v-if="errorMessage">{{ errorMessage }}</p>
+                    <button @click="addNote">Edit Note</button>
+                    <button class="cancel" @click="showEditNote = false">Cancel</button>
+                </div>
+            </div>
             <div class="container-fluid">
                 <div class="row row-cols-auto">
                     <div class="col" v-for="note in notes" :key="note.id">
@@ -131,7 +176,7 @@ function deleteNote(noteId) {
                                    @click="deleteNote(note.id)">
                                     삭제
                                 </a>
-                                <a href="#" class="btn btn-primary">수정</a>
+                                <a href="#" class="btn btn-primary" @click="editNote(note.id, note.content, note.categoryId)">수정</a>
                             </div>
                         </div>
                     </div>
